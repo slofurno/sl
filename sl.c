@@ -60,8 +60,8 @@ int SkipListAdd(SkipList *skiplist, char *key, char *value){
   Node *current = skiplist->head;
   int i;
   for(i = oldheight-1;i>=0;i--){
-    while(current->nodes[i]!=NULL &&strcmp(node->key, current->nodes[i]->key)<0){
-      printf("%s greater than %s\n",current->nodes[i]->key,node->key );
+    while(current->nodes[i]!=NULL &&strcmp(node->key, current->nodes[i]->key)>0){
+      //printf("%s greater than %s\n",node->key,current->nodes[i]->key);
       current=current->nodes[i];
     }
     leadingNodes[i]=current;
@@ -125,12 +125,12 @@ int main(){
   char *key6="fff";
   char *value6="value6";
 
-  SkipListAdd(&skiplist, key6, value1);
-  SkipListAdd(&skiplist, key5, value2);
-  SkipListAdd(&skiplist, key4, value3);
-  SkipListAdd(&skiplist, key3, value4);
-  SkipListAdd(&skiplist, key2, value5);
-  SkipListAdd(&skiplist, key1, value6);
+  SkipListAdd(&skiplist, key1, value1);
+  SkipListAdd(&skiplist, key2, value2);
+  SkipListAdd(&skiplist, key3, value3);
+  SkipListAdd(&skiplist, key4, value4);
+  SkipListAdd(&skiplist, key5, value5);
+  SkipListAdd(&skiplist, key6, value6);
 
   int i;
   int j;
