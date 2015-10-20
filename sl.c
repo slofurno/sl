@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "sl.h"
 
 unsigned char rndtable[256] = {
     0,   8, 109, 220, 222, 241, 149, 107,  75, 248, 254, 140,  16,  66 ,
@@ -26,9 +27,9 @@ unsigned char rndtable[256] = {
 
 int rndindex = 0;
 
-double nextRandom (void)
+static double next_random (void)
 {
-    rndindex = (rndindex+1)&0xff;
+    rndindex = (rndindex+1)&255;
     double result = rndtable[rndindex]/255.0;
     printf("%G\n", result);
     return result;
@@ -41,23 +42,45 @@ typedef struct Node{
 
 } Node;
 
-typedef struct SkipList{
-  Node* head;
-  int height;
+static Node* create_node(char *key, char *value, int height)
+{
+  Node *n = malloc(sizeof(Node));
+  n->key=key;
+  n->value=value;
+  n->nodes = malloc(sizeof(Node*)*height);
+  return n;
+}
 
-} SkipList;
+skiplist* create_skiplist(void){
+  skiplist *sl = malloc(sizeof(skiplist));
+  Node *head = malloc(sizeof(Node));
+  sl->head = head;
+  sl->head->value=NULL;
+  sl->head->key=NULL;
+  sl->head->nodes = malloc(sizeof(Node*)*20);
+  return sl;
+}
 
-int SkipListAdd(SkipList *skiplist, char *key, char *value){
 
-  Node *node = malloc(sizeof(Node));
-  node->key=key;
-  node->value=value;
+void add(skiplist *sl, char *key, char *value){
+
   //Node *node = malloc(sizeof(Node));
-  int oldheight = skiplist->height;
+  //node->key=key;
+  //node->value=value;
+  int oldheight = sl->height;
+
+  int height = 1;
+  while(height<=oldheight && next_random()>=0.5){
+    //printf("%s\n", "bigger");
+    height+=1;
+  }
+
+  Node *node = create_node(key,value,height);
+
   //printf("%d\n", oldheight);
   Node *leadingNodes[oldheight];// = malloc(sizeof(Node*)*oldheight);
 
-  Node *current = skiplist->head;
+  Node *current = sl->head;
   int i;
   for(i = oldheight-1;i>=0;i--){
     while(current->nodes[i]!=NULL &&strcmp(node->key, current->nodes[i]->key)>0){
@@ -67,25 +90,10 @@ int SkipListAdd(SkipList *skiplist, char *key, char *value){
     leadingNodes[i]=current;
 
   }
-
-
-
-  int height = 1;
-  while(height<oldheight+1 &&nextRandom()>=0.5){
-    //printf("%s\n", "bigger");
-    height+=1;
-  }
-
   int upheight = height;
   if (height>oldheight){
-
-  }
-  printf("new height now %d\n", height);
-  node->nodes = malloc(sizeof(Node*)*height);
-
-  if (height>oldheight){
-    skiplist->height=height;
-    skiplist->head->nodes[height-1]=node;
+    sl->height=height;
+    sl->head->nodes[height-1]=node;
     node->nodes[height-1]=NULL;
     upheight=oldheight;
   }
@@ -93,61 +101,23 @@ int SkipListAdd(SkipList *skiplist, char *key, char *value){
   for(i=0;i<upheight;i++){
     node->nodes[i]=leadingNodes[i]->nodes[i];
     leadingNodes[i]->nodes[i]=node;
-  }  
-
+  }
 }
 
-int main(){
-
-  Node head={};
-
-  SkipList skiplist;
-  skiplist.head=&head;
-  skiplist.height=1;
-  head.nodes = malloc(sizeof(Node*)*20);
-  head.value="";
-
-  char *key1="aaa";
-  char *value1="value1";
-
-  char *key2="bbb";
-  char *value2="value2";
-
-  char *key3="ccc";
-  char *value3="value3";
-
-  char *key4="ddd";
-  char *value4="value4";
-
-  char *key5="eee";
-  char *value5="value5";
-
-  char *key6="fff";
-  char *value6="value6";
-
-  SkipListAdd(&skiplist, key1, value1);
-  SkipListAdd(&skiplist, key2, value2);
-  SkipListAdd(&skiplist, key3, value3);
-  SkipListAdd(&skiplist, key4, value4);
-  SkipListAdd(&skiplist, key5, value5);
-  SkipListAdd(&skiplist, key6, value6);
-
+void print_skiplist(skiplist *sl){
   int i;
   int j;
 
   Node *current;
-
   printf("%s\n","----------");
 
-  for (i = skiplist.height-1; i >=0; --i)
+  for (i = sl->height-1; i >=0; --i)
   {
-    current = skiplist.head;
+    current = sl->head;
     while(current!=NULL){
       printf(" %s ",current->key);
       current=current->nodes[i];
     }
     printf("\n");
   }
-
-  return 0;
 }
