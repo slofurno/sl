@@ -9,3 +9,4 @@ bye.txt
 strings.txt
 strings2.txt
 *.stackdump
+*.o
