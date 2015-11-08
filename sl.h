@@ -9,4 +9,8 @@ typedef struct sl{
 
 void add(skiplist *sl, char *key, char *value);
 
+char *get_value(skiplist *sl, char *key);
+
+void delete(skiplist *sl, char *key);
+
 skiplist* create_skiplist(void);

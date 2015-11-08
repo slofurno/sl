@@ -31,7 +31,7 @@ static double next_random (void)
 {
     rndindex = (rndindex+1)&255;
     double result = rndtable[rndindex]/255.0;
-    printf("%G\n", result);
+  //  printf("%G\n", result);
     return result;
 }
 
@@ -39,6 +39,7 @@ typedef struct Node{
   struct Node** nodes;
   char* value;
   char* key;
+  int height;
 
 } Node;
 
@@ -48,6 +49,7 @@ static Node* create_node(char *key, char *value, int height)
   n->key=key;
   n->value=value;
   n->nodes = malloc(sizeof(Node*)*height);
+  n->height=height;
   return n;
 }
 
@@ -64,21 +66,16 @@ skiplist* create_skiplist(void){
 
 void add(skiplist *sl, char *key, char *value){
 
-  //Node *node = malloc(sizeof(Node));
-  //node->key=key;
-  //node->value=value;
   int oldheight = sl->height;
 
   int height = 1;
   while(height<=oldheight && next_random()>=0.5){
-    //printf("%s\n", "bigger");
     height+=1;
   }
 
   Node *node = create_node(key,value,height);
 
-  //printf("%d\n", oldheight);
-  Node *leadingNodes[oldheight];// = malloc(sizeof(Node*)*oldheight);
+  Node *leadingNodes[oldheight];
 
   Node *current = sl->head;
   int i;
@@ -104,7 +101,87 @@ void add(skiplist *sl, char *key, char *value){
   }
 }
 
+void delete(skiplist *sl, char *key)
+{
+  int i;
+  Node *current = sl->head;
+
+  for(i=sl->height-1;i>=0;i--){
+
+    while(current->nodes[i]!=NULL){
+      int k = strcmp(key, current->nodes[i]->key);
+
+      if (k==0){
+        current->nodes[i]=current->nodes[i]->nodes[i];
+        break;
+      }
+
+      if (k<0){
+        //printf("%s < %s\n", key, current->nodes[i]->key);
+        break;
+      }
+
+      current=current->nodes[i];
+    }
+  }
+
+}
+
+char *get_value(skiplist *sl, char *key){
+  int i;
+  Node *current = sl->head;
+
+  for(i=sl->height-1;i>=0;i--){
+
+    while(current->nodes[i]!=NULL){
+      int k = strcmp(key, current->nodes[i]->key);
+
+      if (k==0){
+        return current->nodes[i]->value;
+      }
+
+      if (k<0){
+        //printf("%s < %s\n", key, current->nodes[i]->key);
+        break;
+      }
+
+      current=current->nodes[i];
+    }
+  }
+
+  return NULL;
+}
+
+/*
+
+  for(i=sl->height-1;i>=0;i--){
+    while(current->nodes[i]!=NULL && strcmp(key, current->nodes[i]->key)>=0){
+      strcmp(key, current->nodes[i]->key)>=0
+      printf("%s < %s\n", key, current->nodes[i]->key);
+      current=current->nodes[i];
+    }
+    printf("droppin to %d\n",i);
+  }
+
+  return current->value;
+*/
+
 void print_skiplist(skiplist *sl){
+
+  Node *node = sl->head;
+  while(node->nodes[0]!=NULL){
+    int k = 0;
+    while(k<node->height){
+      printf("%s ",node->value);
+      k++;
+    }
+    printf("\n");
+    node=node->nodes[0];
+  }
+
+}
+
+void print_skiplist2(skiplist *sl){
   int i;
   int j;
 

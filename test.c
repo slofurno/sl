@@ -6,7 +6,6 @@
 
 int main(){
 
-
   skiplist *sl = create_skiplist();
 
   char *key1="aaa";
@@ -27,6 +26,57 @@ int main(){
   char *key6="fff";
   char *value6="value6";
 
+  char **inputs;
+
+  char *line = NULL;
+  size_t len = 0;
+  ssize_t read;
+  int bytes_read;
+
+  //txt not text thanks for wasting an hour on this LETTER E
+  FILE *fp = fopen("./strings.txt","rt");
+
+
+  while ((read = getline(&line, &len, fp)) != -1) {
+      //   printf("Retrieved line of length %zu %d :\n", read, len);
+        //  printf("%s", line);
+          char *keyval = malloc(sizeof(char)*len);
+          strncpy(keyval, line, read-1);
+          add(sl,keyval,keyval);
+  }
+
+  fclose(fp);
+
+  char *del1 = "0ziHrVsk";
+  char *del2 = "32bSIsQF";
+  char *del3 = "wGvvD2BV";
+
+  print_skiplist(sl);
+
+  delete(sl, del1);
+  delete(sl, del2);
+  delete(sl, del3);
+
+  print_skiplist(sl);
+
+
+  add(sl, del1, del1);
+  add(sl, del2, del2);
+  add(sl, del3, del3);
+
+
+/*
+  while((bytes_read = getline (&my_string, nbytes, stdin))>=0){
+    printf("read some byts %d\n",nbytes );
+    add(sl, my_string, my_string);
+    my_string=NULL;
+    nbytes=0;
+  }
+  */
+
+
+
+/*
   add(sl, key1, value1);
   add(sl, key2, value2);
   add(sl, key3, value3);
@@ -34,6 +84,22 @@ int main(){
   add(sl, key5, value5);
   add(sl, key6, value6);
 
+  char *testkey = "ccc";
+
+  char *answer1 = get_value(sl, testkey);
+  printf("should be value3: %s\n", answer1);
+
+  char *testkey2 = "a";
+
+  char *answer2 = get_value(sl, testkey2);
+  printf("should be NULL: %s\n", answer2);
+
+
+  char *testkey3 = "z";
+
+  char *answer3 = get_value(sl, testkey3);
+  printf("should be NULL: %s\n", answer3);
+*/
   print_skiplist(sl);
 
   return 0;
