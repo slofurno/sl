@@ -183,7 +183,6 @@ void print_skiplist(skiplist *sl){
 
 void print_skiplist2(skiplist *sl){
   int i;
-  int j;
 
   Node *current;
   printf("%s\n","----------");
