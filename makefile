@@ -1,6 +1,12 @@
+cflags= -Wall -Wextra -std=c99
 
-all: run
+all: build test
 
+tests:
+	cd tests && $(MAKE)
+
+slice: slice.c 
+	gcc $(cflags) slice.o -o slice
 
 build: sl.o test.o sl.h
 	gcc test.o sl.o -o test
