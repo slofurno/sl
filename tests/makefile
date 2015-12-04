@@ -1,11 +1,15 @@
 cflags= -Wall -Wextra -std=c99
 
-.PHONY: all
+.PHONY: all test 
 
 all: test
 
-slice_test: slice_test.c
-	gcc $(cflags) slice_test.c -o slice_test
+slice: slice.c
+	gcc $(cflags) slice.c -o slice
 
-test: slice_test
-	./slice_test
+skiplist: skiplist.c
+	gcc $(cflags) skiplist.c -o skiplist
+
+test: slice skiplist
+	./slice > slice.log
+	./skiplist > skiplist.log

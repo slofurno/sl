@@ -1,37 +1,18 @@
-#include "skiplist.h"
+#define _GNU_SOURCE
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
+#include "../skiplist.c"
 
 int main(){
 
   skiplist *sl = create_skiplist();
 
-  char *key1="aaa";
-  char *value1="value1";
-
-  char *key2="bbb";
-  char *value2="value2";
-
-  char *key3="ccc";
-  char *value3="value3";
-
-  char *key4="ddd";
-  char *value4="value4";
-
-  char *key5="eee";
-  char *value5="value5";
-
-  char *key6="fff";
-  char *value6="value6";
-
-  char **inputs;
-
   char *line = NULL;
   size_t len = 0;
   int read;
-  int bytes_read;
 
   //txt not text thanks for wasting an hour on this LETTER E
   FILE *fp = fopen("./strings.txt","rt");

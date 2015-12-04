@@ -3,28 +3,28 @@ prefix=/usr/local
 
 .PHONY: all tests run clean install
 
-all: build test 
+all: tests 
 
 tests:
 	cd tests && $(MAKE)
 
+test: test_skiplist 
+	./test_skiplist > test.out
+
 slice: slice.c 
 	gcc $(cflags) slice.o -o slice
 
-build: skiplist.o test.o skiplist.h
-	gcc test.o skiplist.o -o test
-
-run: build
-	./test
+test_skiplist: skiplist.o test_skiplist.o
+	gcc test_skiplist.o skiplist.o -o test_skiplist
 
 list.o : skiplist.c skiplist.h
 	gcc -c list.c
 
-test.o : test.c skiplist.h
-	gcc -c test.c
+test_skiplist.o : test_skiplist.c skiplist.h
+	gcc -c test_skiplist.c
 
 clean:
-	rm *.o *.so test
+	rm -f *.o *.so
 
 libslice.so: slice.c slice.h
 	gcc $(cflags) -shared -o libslice.so -fPIC slice.c
