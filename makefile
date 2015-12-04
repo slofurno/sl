@@ -30,3 +30,5 @@ libslice.so: slice.c slice.h
 
 install: libslice.so
 	install -m 0755 libslice.so $(prefix)/lib
+	install -d $(prefix)/include/sl
+	install -m 0644 -D *.h $(prefix)/include/sl
