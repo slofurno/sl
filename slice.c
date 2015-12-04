@@ -2,13 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>
-
-typedef struct slice slice;
-struct slice {
-    int len;
-    size_t cap;
-    char *bytes;
-};
+#include "slice.h"
 
 void free_slice(slice *s)
 {
