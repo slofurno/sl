@@ -1,3 +1,5 @@
+#ifndef SL_SKIPLIST_INCLUDED
+#define SL_SKIPLIST_INCLUDED
 
 typedef struct skiplist skiplist;
 
@@ -18,3 +20,5 @@ void skiplist_delete (skiplist *sl, char *key);
 void skiplist_print (skiplist *head);
 
 skiplist* create_skiplist (void);
+
+#endif

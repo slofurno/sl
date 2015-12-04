@@ -1,3 +1,6 @@
+#ifndef SL_SLICE_INCLUDED
+#define SL_SLICE_INCLUDED
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -23,3 +26,5 @@ void slice_append(slice *self, char *str);
 void append(slice *self, char *str);
 
 slice* make_slice();
+
+#endif

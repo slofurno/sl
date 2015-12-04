@@ -1,8 +1,9 @@
 cflags= -Wall -Wextra -std=c99
 prefix=/usr/local
 
+.PHONY: all tests run clean install
 
-all: build test build_shared install
+all: build test 
 
 tests:
 	cd tests && $(MAKE)
@@ -10,16 +11,16 @@ tests:
 slice: slice.c 
 	gcc $(cflags) slice.o -o slice
 
-build: sl.o test.o sl.h
-	gcc test.o sl.o -o test
+build: skiplist.o test.o skiplist.h
+	gcc test.o skiplist.o -o test
 
 run: build
 	./test
 
-list.o : sl.c sl.h
+list.o : skiplist.c skiplist.h
 	gcc -c list.c
 
-test.o : test.c sl.h
+test.o : test.c skiplist.h
 	gcc -c test.c
 
 clean:
@@ -28,7 +29,13 @@ clean:
 libslice.so: slice.c slice.h
 	gcc $(cflags) -shared -o libslice.so -fPIC slice.c
 
-install: libslice.so
+install: libslice.so libskiplist.so
 	install -m 0755 libslice.so $(prefix)/lib
+	install -m 0755 libskiplist.so $(prefix)/lib
 	install -d $(prefix)/include/sl
 	install -m 0644 -D *.h $(prefix)/include/sl
+
+libskiplist.so: skiplist.c skiplist.h
+	gcc $(cflags) -shared -o libskiplist.so -fPIC skiplist.c
+
+
