@@ -1,16 +1,20 @@
 
+typedef struct skiplist skiplist;
 
-typedef struct sl{
-  struct Node* head;
+struct skiplist {
   int height;
+  char *value;
+  char *key;
+  skiplist **nodes;
+};
 
-} skiplist;
 
+void skiplist_add (skiplist *sl, char *key, char *value);
 
-void add(skiplist *sl, char *key, char *value);
+char* skiplist_search (skiplist *sl, char *key);
 
-char *get_value(skiplist *sl, char *key);
+void skiplist_delete (skiplist *sl, char *key);
 
-void delete(skiplist *sl, char *key);
+void skiplist_print (skiplist *head);
 
-skiplist* create_skiplist(void);
+skiplist* create_skiplist (void);

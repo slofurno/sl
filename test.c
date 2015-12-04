@@ -30,7 +30,7 @@ int main(){
 
   char *line = NULL;
   size_t len = 0;
-  ssize_t read;
+  int read;
   int bytes_read;
 
   //txt not text thanks for wasting an hour on this LETTER E
@@ -42,7 +42,7 @@ int main(){
         //  printf("%s", line);
           char *keyval = malloc(sizeof(char)*len);
           strncpy(keyval, line, read-1);
-          add(sl,keyval,keyval);
+          skiplist_add (sl, keyval, keyval);
   }
 
   fclose(fp);
@@ -51,18 +51,28 @@ int main(){
   char *del2 = "32bSIsQF";
   char *del3 = "wGvvD2BV";
 
-  print_skiplist(sl);
+  skiplist_print (sl);
 
-  delete(sl, del1);
-  delete(sl, del2);
-  delete(sl, del3);
-
-  print_skiplist(sl);
+  skiplist_delete (sl, del1);
+  skiplist_delete (sl, del2);
+  skiplist_delete (sl, del3);
 
 
-  add(sl, del1, del1);
-  add(sl, del2, del2);
-  add(sl, del3, del3);
+
+  skiplist_add (sl, del1, del1);
+  skiplist_add (sl, del2, del2);
+  skiplist_add (sl, del3, del3);
+
+    char *mykey = "papa_steve";
+    char *myval = ":D:D:D:D";
+
+    skiplist_add(sl, mykey, myval);
+
+    char *checkkey = skiplist_search(sl, mykey);
+
+    //skiplist_print (sl);
+
+    printf("is this your key: %s\n", checkkey);
 
 
 /*
@@ -100,7 +110,7 @@ int main(){
   char *answer3 = get_value(sl, testkey3);
   printf("should be NULL: %s\n", answer3);
 */
-  print_skiplist(sl);
+  skiplist_print (sl);
 
   return 0;
 }
