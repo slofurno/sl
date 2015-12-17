@@ -49,6 +49,7 @@ skiplist* create_skiplist (void){
   sl->value = NULL;
   sl->key = NULL;
   sl->nodes = malloc(sizeof(skiplist*)*20);
+  sl->height = 0;
   return sl;
 }
 

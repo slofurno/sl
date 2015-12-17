@@ -1,4 +1,4 @@
-cflags= -Wall -Wextra -std=c99
+cflags= -g -Wall -Wextra -std=c99
 prefix=/usr/local
 
 .PHONY: all tests run clean install

@@ -9,6 +9,8 @@
 int main(){
 
   skiplist *sl = create_skiplist();
+  skiplist *sl2 = create_skiplist();
+
 
   char *line = NULL;
   size_t len = 0;
@@ -45,9 +47,10 @@ int main(){
   skiplist_add (sl, del3, del3);
 
     char *mykey = "papa_steve";
-    char *myval = ":D:D:D:D";
+    char *myval = "1234:543:432";
 
     skiplist_add(sl, mykey, myval);
+    skiplist_add(sl2, mykey, myval);
 
     char *checkkey = skiplist_search(sl, mykey);
 
@@ -92,6 +95,14 @@ int main(){
   printf("should be NULL: %s\n", answer3);
 */
   skiplist_print (sl);
+
+
+
+    char *hopefully_null = skiplist_search(sl2, "Content-Length");
+
+    if (!hopefully_null){
+        printf("null as expected!\n");
+    }
 
   return 0;
 }
