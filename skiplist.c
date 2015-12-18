@@ -53,6 +53,13 @@ skiplist* create_skiplist (void){
   return sl;
 }
 
+static void skiplist_free (skiplist *sl)
+{
+    //TODO: copy key/value on add + free here
+    free(sl->nodes);
+    free(sl);
+}
+
 void skiplist_add (skiplist *head, char *key, char *value){
 
   int oldheight = head->height;
@@ -62,31 +69,57 @@ void skiplist_add (skiplist *head, char *key, char *value){
     height+=1;
   }
 
+  head->height = height;
+
   skiplist *node = create_node(key, value, height);
-  skiplist *leadingNodes[oldheight];
   skiplist *current = head;
 
   int i;
-  for(i = oldheight-1; i >= 0; i--){
+  for(i = height-1; i >= 0; i--){
     while(current->nodes[i] != NULL && strcmp(node->key, current->nodes[i]->key) > 0){
       current = current->nodes[i];
     }
-    leadingNodes[i] = current;
-  }
-  
-  int upheight = height;
-  if (height > oldheight){
-    head->height = height;
-    head->nodes[height-1] = node;
-    node->nodes[height-1] = NULL;
-    upheight = oldheight;
-  }
-
-  for(i=0; i < upheight; i++){
-    node->nodes[i] = leadingNodes[i]->nodes[i];
-    leadingNodes[i]->nodes[i] = node;
+    node->nodes[i] = current->nodes[i];
+    current->nodes[i] = node;
   }
 }
+
+char *skiplist_remove (skiplist *head, char *key)
+{
+
+    int i;
+    skiplist *current = head;
+    skiplist *match = NULL;
+    int height = head->height;
+
+    for(i = height-1; i >= 0; i--){
+        while(current->nodes[i] != NULL){ 
+            int k = strcmp(key, current->nodes[i]->key);
+
+            if (k == 0){
+                match = current->nodes[i];
+                current->nodes[i] = current->nodes[i]->nodes[i];
+                break;
+            }
+
+            if (k < 0){
+                break;
+            }
+
+            current = current->nodes[i];
+        }
+
+    }
+
+    if (match){
+        char *value = match->value;
+        skiplist_free(match);
+        return value;
+    }
+
+    return NULL;
+}
+
 
 void skiplist_delete (skiplist *head, char *key)
 {

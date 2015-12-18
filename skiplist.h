@@ -17,6 +17,8 @@ char* skiplist_search (skiplist *sl, char *key);
 
 void skiplist_delete (skiplist *sl, char *key);
 
+char *skiplist_remove (skiplist *sl, char *key);
+
 void skiplist_print (skiplist *head);
 
 skiplist* create_skiplist (void);

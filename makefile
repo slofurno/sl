@@ -1,11 +1,11 @@
 cflags= -g -Wall -Wextra -std=c99
 prefix=/usr/local
 
-.PHONY: all tests run clean install
+.PHONY: all test run clean install
 
-all: tests 
+all: test 
 
-tests:
+test:
 	cd tests && $(MAKE)
 
 clean:

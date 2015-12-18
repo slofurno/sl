@@ -12,4 +12,4 @@ skiplist: skiplist.c
 
 test: slice skiplist
 	./slice > slice.log
-	./skiplist > skiplist.log
+	./skiplist
