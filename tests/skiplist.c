@@ -5,6 +5,7 @@
 #include <string.h>
 #include <assert.h>
 #include "../skiplist.c"
+#include "input.c"
 
 int main(){
 
@@ -12,6 +13,8 @@ int main(){
 
     char *keys[] = {"one","two","three","four","five","six","seven","eight","nine","ten","eleven"};
 
+    int testkey_sz = sizeof(testkeys)/sizeof(char*);
+    printf("you have %d keys\n", testkey_sz);
     int test_sz = sizeof(keys)/sizeof(char*);
     printf("? %d\n", test_sz);
 
@@ -21,12 +24,16 @@ int main(){
 
     for (int i = 0; i < test_sz; i++){
         skiplist_add(sl, keys[i], keys[i]);
-    } 
+    }
+
+    for (int i = 0; i < testkey_sz; i++){
+        skiplist_add(sl, testkeys[i], testkeys[i]);
+    }
 
     skiplist_print(sl);
     char *six = skiplist_search(sl, "six");
 
-    printf("getting %s : %s\n", "six", six); 
+    printf("getting %s : %s\n", "six", six);
 
     char *am_i_steve = skiplist_remove(sl, steve);
     printf("steve?  %s\n", am_i_steve);

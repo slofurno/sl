@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "skiplist.h"
+#include <time.h>
 
 unsigned char rndtable[256] = {
     0,   8, 109, 220, 222, 241, 149, 107,  75, 248, 254, 140,  16,  66 ,
@@ -43,6 +44,7 @@ static skiplist* create_node(char *key, char *value, int height) {
 }
 
 skiplist* create_skiplist(void) {
+  srand((unsigned int)time(NULL));
   skiplist *sl = malloc(sizeof(skiplist));
   sl->value = NULL;
   sl->key = NULL;
@@ -60,11 +62,21 @@ static void skiplist_free(skiplist *sl){
 void skiplist_add(skiplist *head, char *key, char *value) {
   int oldheight = head->height;
   int height = 1;
+  /*
   while(height <= oldheight && next_random() >= 0.5) {
     height += 1;
   }
+  */
 
-  head->height = height;
+  int x = rand();
+  while(height <= oldheight && ((x >>= 1)&1)) {
+    height+=1;
+  }
+
+  if(height > oldheight) {
+    head->height = height;
+  }
+
   skiplist *node = create_node(key, value, height);
   skiplist *current = head;
   int i;
@@ -166,5 +178,7 @@ void skiplist_print(skiplist *head) {
         printf("\n");
         cur = cur->nodes[0];
     }
+
+    printf("height: %d\n", head->height);
 }
 
