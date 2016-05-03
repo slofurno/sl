@@ -1,16 +1,16 @@
 #ifndef SL_SLICE_INCLUDED
 #define SL_SLICE_INCLUDED
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
 #include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 typedef struct slice slice;
 struct slice {
-    int len;
-    size_t cap;
-    char *bytes;
+  int len;
+  size_t cap;
+  char *bytes;
 };
 
 void free_slice(slice *s);
@@ -25,6 +25,6 @@ void slice_append(slice *self, char *str);
 
 void append(slice *self, char *str);
 
-slice* make_slice();
+slice *make_slice();
 
 #endif

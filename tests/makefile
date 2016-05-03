@@ -1,4 +1,4 @@
-cflags= -Wall -Wextra -std=c99
+cflags= -Wall -Wextra -O2 -std=c11
 
 .PHONY: all test clean
 

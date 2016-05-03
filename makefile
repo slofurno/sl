@@ -1,4 +1,4 @@
-cflags= -g -Wall -Wextra -std=c99
+cflags= -g -Wall -Wextra -pedantic -fno-strict-aliasing -O2 -std=c11
 prefix=/usr/local
 
 .PHONY: all test run clean install

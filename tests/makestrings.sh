@@ -1,4 +1,4 @@
-max=5000
+max=25000
 printf "char *testkeys[] = {\"asdf\"" > input.c
 for i in `seq 0 $max`
 do
